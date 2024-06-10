@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchData } from './dataThunks';
 
 interface DataState {
-  data: any[]
+  data: unknown[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error?: string | null
 }
@@ -16,10 +16,17 @@ const dataSlice = createSlice({
 	name: 'data',
 	initialState,
 	reducers: {
-		updateRow: (state, action) => {
+		updateRow: (state, action: PayloadAction<{ id: string; data: unknown }>) => {
 			const { id, data } = action.payload;
-			const index = state.data.findIndex(row => row.id === id);
-			state.data[index] = data;
+			const index = state.data.findIndex((row) => {
+				if (typeof row === 'object' && row !== null && 'id' in row) {
+					return row.id === id;
+				}
+				return false;
+			});
+			if (index !== -1) {
+				state.data[index] = data;
+			}
 		},
 	},
 	extraReducers: (builder) => {
@@ -27,7 +34,7 @@ const dataSlice = createSlice({
 			.addCase(fetchData.pending, (state) => {
 				state.status = 'loading';
 			})
-			.addCase(fetchData.fulfilled, (state, action: PayloadAction<any[]>) => {
+			.addCase(fetchData.fulfilled, (state, action: PayloadAction<unknown[]>) => {
 				state.status = 'succeeded';
 				state.data = action.payload;
 			})

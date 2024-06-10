@@ -1,5 +1,5 @@
 import React from 'react';
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import DateInputField from './DateInputField';
 import DateTimeInputField from './DateTimeInputField';
 
@@ -8,8 +8,8 @@ type InputFieldValue = string | number | boolean
 interface InputFieldProps {
   name: string
   value: InputFieldValue
-  register: UseFormRegister<any>
-  setValue: UseFormSetValue<any>
+  register: UseFormRegister<FieldValues>
+  setValue: UseFormSetValue<FieldValues>
 }
 
 const InputField: React.FC<InputFieldProps> = ({

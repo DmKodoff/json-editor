@@ -2,7 +2,6 @@ import React, { ChangeEvent, useCallback } from 'react';
 import {
 	UseFormRegister,
 	UseFormSetValue,
-	FieldError,
 	FieldValues,
 } from 'react-hook-form';
 

@@ -1,12 +1,12 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useMemo, useState } from 'react';
 
 import {
+	ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	getSortedRowModel,
-	Row,
 	useReactTable,
 } from '@tanstack/react-table';
 
@@ -15,28 +15,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { updateRow } from '../features/data/dataSlice';
 import EditModal from './EditModal';
+import { FieldValues } from 'react-hook-form';
 
 const DataTable = () => {
 	const data = useSelector((state: RootState) => state.data.data);
 	const dispatch = useDispatch();
-	const [editingRow, setEditingRow] = useState<any>(null);
+	const [editingRow, setEditingRow] = useState<unknown|null>(null);
 
-	const columns = useMemo<any[]>(
+	const columns = useMemo<ColumnDef<unknown>[]>(
 		() =>
 			(data.length
 				? [
 					{
 						header: 'Edit',
 						accessorKey: 'edit',
-						cell: (cell: any) => (
+						enableSorting: false,
+						cell: cell => (
 							<button type="button" onClick={() => setEditingRow(cell.row.original)}>
 								Edit
 							</button>
 						),
 					},
-					...Object.entries(data[0])
+					...Object.entries(data[0] as Record<string, unknown>)
 						.filter(([, value]) => typeof value !== 'object')
-						.map(([key, value]) => {
+						.map(([key]) => {
 							return {
 								header: key.toUpperCase(),
 								accessorKey: key,
@@ -48,9 +50,11 @@ const DataTable = () => {
 		[data]
 	);
 
-	const handleSave = (data: any) => {
-		dispatch(updateRow({ id: editingRow.id, data }));
-		setEditingRow(null);
+	const handleSave = (row: unknown) => {
+    	if (typeof editingRow === 'object' && editingRow !== null && 'id' in editingRow && typeof editingRow.id === 'string') {
+			dispatch(updateRow({ id: editingRow.id, data: row }));
+			setEditingRow(null);
+		}
 	};
 
 	const table = useReactTable({
@@ -128,7 +132,7 @@ const DataTable = () => {
 						}}
 					>
 						{rowVirtualizer.getVirtualItems().map((virtualRow) => {
-							const row = rows[virtualRow.index] as Row<any>;
+							const row = rows[virtualRow.index];
 							return (
 								<tr
 									data-index={virtualRow.index}
@@ -160,11 +164,11 @@ const DataTable = () => {
 					</tbody>
 				</table>
 			</div>
-			{editingRow && (
+			{editingRow !== null && (
 				<EditModal
 					isOpen
 					onRequestClose={() => setEditingRow(null)}
-					data={editingRow}
+					data={editingRow as FieldValues}
 					onSave={handleSave}
 				/>
 			)}
