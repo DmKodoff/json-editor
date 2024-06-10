@@ -1,0 +1,138 @@
+.json-editor {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.json-editor span {
+  margin-right: 10px;
+}
+
+.json-editor button {
+  margin-left: auto;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-family: arial, sans-serif;
+  table-layout: fixed;
+  display: grid;
+}
+
+thead {
+  background: lightgray;
+  display: 'grid';
+  position: 'sticky';
+  top: 0;
+}
+
+tbody {
+  position: relative;
+  display: grid;
+}
+tr {
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  width: 100%;
+}
+
+th {
+  display: flex;
+  padding: 2px 4px;
+  text-align: left;
+  border-bottom: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}
+
+th > div {
+  cursor: pointer;
+}
+
+td {
+  padding: 6px;
+  display: flex;
+  word-break: break-all;
+}
+
+.container {
+  border: 1px solid lightgray;
+  margin: 1rem auto;
+  overflow: auto;
+  position: relative;
+  height: 800px;
+}
+
+.table-component {
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  background: white;
+  max-height: 80dvh;
+  overflow: auto;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(255, 255, 255, 0.75);
+  z-index: 100;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.form-group input[type='checkbox'] {
+  margin-right: 0.5rem;
+  width: auto;
+}
+
+.form-group span {
+  color: red;
+  margin-top: 0.5rem;
+}
+
+.form-group:last-child {
+  align-self: flex-end;
+}
